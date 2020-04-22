@@ -10,7 +10,7 @@ function verificarToken (req, res, next) {
 
     jwt.verify(token, process.env.SEED, (err, decoded)=>{
         if(err){
-            return res.json({
+            return res.status(401).json({
                 err
             })
         }
@@ -24,7 +24,7 @@ function verificaAdmin (req, res, next) {
 
     jwt.verify(token, process.env.SEED, (err, decoded)=>{
         if(err){
-            return res.json({
+            return res.status(401).json({
                 err
             })
         }

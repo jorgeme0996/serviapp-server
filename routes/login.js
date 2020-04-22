@@ -16,9 +16,10 @@ router.post('/login', (req, res) => {
         }
 
         if(!userDB){
-            return res.json({
+            return res.status(401).json({
                 err: {
-                    message: 'Usuario no encontrado'
+                    message: 'Usuario no encontrado',
+                    ok: false
                 }
             })
         }
