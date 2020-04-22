@@ -3,7 +3,9 @@ require('./config/config');
 const express = require('express');
 const connectDB = require('./config/db');
 const fileupload = require('express-fileupload');
+const cors = require('cors');
 const path = require('path');
+const app = express();
 
 //Import Routes
 const UserRoutes = require('./routes/user');
@@ -11,10 +13,11 @@ const LoginRoutes = require('./routes/login');
 const AuthRoutes = require('./routes/auth');
 const AddressRoutes = require('./routes/address');
 
-
 //Connect to database
 connectDB();
-const app = express();
+
+//cors
+app.use(cors({origin: true, credentials: true}));
 
 //Body Parser
 app.use(express.json());
@@ -23,7 +26,7 @@ app.use(express.json());
 app.use(fileupload());
 
 //Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 //Routes
 app.use('/api/v1/user', UserRoutes);
@@ -38,4 +41,4 @@ app.get('/', (req, res)=> {
     })
 })
 
-app.listen(process.env.PORT,process.env.IP || 5000, ()=>console.log('Server running'));
+app.listen(process.env.PORT, ()=>console.log('Server running'));
