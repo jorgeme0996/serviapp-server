@@ -25,9 +25,10 @@ router.post('/login', (req, res) => {
         }
 
         if(!bcrypt.compareSync(body.password, userDB.password)) {
-            return res.json({
+            return res.status(401).json({
                 err: {
-                    message: 'Usuario o contraseña incorrectos'
+                    message: 'Usuario o contraseña incorrectos',
+                    ok: false
                 }
             })
         }
