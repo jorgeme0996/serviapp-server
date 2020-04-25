@@ -8,7 +8,7 @@ router.post('/create', verificarToken, (req, res)=> {
     const userId = req.user.user._id;
     User.findById(userId, (err, user)=> {
         if(err){
-            return res.status(400).json({
+            return res.status(500).json({
                 message: 'Error al cargar usuario',
                 ok: false
             })
@@ -18,7 +18,7 @@ router.post('/create', verificarToken, (req, res)=> {
             Address.create(req.body, (err, address)=> {
                 if(err){
                     console.log(err);
-                    return res.status(400).json({
+                    return res.status(500).json({
                         message: 'Error al crear una dirección',
                         ok: false
                     })
@@ -35,7 +35,7 @@ router.post('/create', verificarToken, (req, res)=> {
                 })
             })
         } else {
-            return res.status(400).json({
+            return res.status(401).json({
                 message: 'No se encontro usuario',
                 ok: false
             })
@@ -47,7 +47,7 @@ router.put('/update/:idAddress', verificarToken, (req, res)=> {
     const id = req.params.idAddress;
     Address.findById(id, (err, address)=> {
         if(err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 message: 'Error al actualizar Dirección',
                 ok: false
             })
@@ -55,7 +55,7 @@ router.put('/update/:idAddress', verificarToken, (req, res)=> {
         if(req.user.user._id.toString() === address.ownerId.toString()) {
             Address.findByIdAndUpdate(id, req.body, {new:true}, (err, address)=> {
                 if(err) {
-                    return res.status(400).json({
+                    return res.status(500).json({
                         message: 'Error al actualizar Dirección',
                         ok: false
                     })
@@ -67,7 +67,7 @@ router.put('/update/:idAddress', verificarToken, (req, res)=> {
                 })
             })
         } else {
-            return res.status(400).json({
+            return res.status(401).json({
                 message: 'Usuario Incorrecto',
                 ok: false
             })
@@ -80,7 +80,7 @@ router.get('/user', verificarToken, (req, res)=> {
 
     Address.find({ownerId: user._id}, (err, addresses)=> {
         if(err){
-            return res.status(400).json({
+            return res.status(500).json({
                 message: 'Error al cargar al direcciones',
                 ok: false
             })
@@ -122,7 +122,7 @@ router.delete('/delete/:idAddress', verificarToken, (req, res) => {
                 })
             })
         } else {
-            return res.status(400).json({
+            return res.status(401).json({
                 message: 'Usuario Incorrecto',
                 ok: false
             })

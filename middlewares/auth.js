@@ -5,7 +5,7 @@ const   jwt = require('jsonwebtoken');
 
 
 
-function verificarToken (req, res, next) {
+const verificarToken = (req, res, next) => {
     let token = req.get('Authorization');
 
     jwt.verify(token, process.env.SEED, (err, decoded)=>{
@@ -19,7 +19,7 @@ function verificarToken (req, res, next) {
     })
 }
 
-function verificaAdmin (req, res, next) {
+const verificaAdmin =  (req, res, next) => {
     let token = req.get('Authorization');
 
     jwt.verify(token, process.env.SEED, (err, decoded)=>{
@@ -41,4 +41,26 @@ function verificaAdmin (req, res, next) {
     })
 }
 
-module.exports = {verificarToken, verificaAdmin};
+const verificaGod =  (req, res, next) => {
+    let token = req.get('Authorization');
+
+    jwt.verify(token, process.env.SEED, (err, decoded)=>{
+        if(err){
+            return res.status(401).json({
+                err
+            })
+        }
+
+        if(decoded.user.role === 'GOD_ROLE') {
+            next();
+        } else {
+            return res.json({
+                err: {
+                    message: 'El usuario no es Dios'
+                }
+            })
+        }
+    })
+}
+
+module.exports = {verificarToken, verificaAdmin, verificaGod};

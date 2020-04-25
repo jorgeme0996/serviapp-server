@@ -6,18 +6,6 @@ var BrandSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El nombre es obligatorio'],
     },
-    products: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product"
-        }
-    ],
-    models: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Model"
-        }
-    ],
     slug: String
 });
 

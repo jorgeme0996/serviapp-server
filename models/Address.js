@@ -10,7 +10,7 @@ var AddressSchema = new mongoose.Schema({
         type: String,
         required: [true, 'La colonia es obligatoria'],
     },
-    cp: {
+    zipCode: {
         type: String,
         required: [true, 'El código postal es obligatorio'],
     },
@@ -23,10 +23,10 @@ var AddressSchema = new mongoose.Schema({
         required: [true, 'El estado es obligatorio'],
     },
     numExt: {
-        type: Number,
+        type: String,
         required: [true, 'El número exterior es obligatorio'],
     },
-    numInt: Number,
+    numInt: String,
     createAt: {
         type: Date,
         default: Date.now
@@ -35,6 +35,10 @@ var AddressSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
+    alias: String,
+    referenceOne: String,
+    referenceTwo: String,
+    comments: String,
     slug: String
 });
 

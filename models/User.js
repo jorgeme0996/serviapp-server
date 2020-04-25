@@ -21,28 +21,31 @@ var UserSchema = new mongoose.Schema({
         type: String,
         maxlength: [10, 'Número a 10 dígitos']
     },
+    phoneTwo: {
+        type: String,
+        maxlength: [10, 'Número a 10 dígitos']
+    },
     addresses: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Address"
         }
     ],
-    shoppingCart: [
+    shoppingCart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ShoppingCart"
+    },
+    tickets: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Model"
-        }
-    ],
-    buyItems: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Model"
+            ref: "Ticket"
         }
     ],
     role: {
         type: String,
         required: true,
         enum: [
+            'GOD_ROLE',
             'ADMIN_ROLE',
             'CLIENT_ROLE'
         ],

@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const {verificarToken} = require('../middlewares/auth');
+const {verificarToken, verificaAdmin, verificaGod} = require('../middlewares/auth');
 const router  = express.Router();
 
 router.post('/create', (req, res) => {
@@ -35,7 +35,7 @@ router.post('/create', (req, res) => {
             },   
         }, process.env.SEED, {expiresIn: process.env.CADUCIDAD_TOKEN});
 
-        res.status(200).json({
+        res.status (200).json({
             ok: true,
             user: userStored,
             token
@@ -93,7 +93,7 @@ router.patch('/update/password', verificarToken, (req, res) => {
     })
 })
 
-router.delete('/delete', verificarToken, (req, res) => {
+router.delete('/delete', [verificarToken, verificaGod], (req, res) => {
     const user = req.user.user;
 
     User.findByIdAndDelete(user._id, (err, user) => {

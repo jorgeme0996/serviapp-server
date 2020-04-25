@@ -5,14 +5,14 @@ const router = express.Router();
 router.get('/admin', [verificarToken, verificaAdmin], (req, res) => {
     return res.status(200).json({
         ok: true,
-        user: req.user
+        user: req.user.user
     })
 })
 
 router.get('/', [verificarToken], (req, res) => {
     return res.status(200).json({
         ok: true,
-        user: req.user
+        user: req.user.user
     })
 })
 

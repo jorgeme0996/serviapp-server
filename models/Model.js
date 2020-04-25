@@ -10,10 +10,6 @@ var ModelSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'El precio es obligatorio'],
     },
-    stock: {
-        type: Number,
-        default: 0
-    },
     description: String,
     brandId: {
         type: mongoose.Schema.Types.ObjectId,
