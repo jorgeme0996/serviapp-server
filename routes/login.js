@@ -18,7 +18,7 @@ router.post('/login', (req, res) => {
         if(!userDB){
             return res.status(401).json({
                 err: {
-                    message: 'Usuario no encontrado',
+                    message: 'Usuario o contraseña incorrectos',
                     ok: false
                 }
             })
@@ -39,7 +39,16 @@ router.post('/login', (req, res) => {
 
         res.json({
             ok: true,
-            token
+            token,
+            user: {
+                _id: userDB._id,
+                role: userDB.role,
+                email: userDB.email,
+                name: userDB.name || '',
+                lastName: userDB.lastName || '',
+                middleName: userDB.middleName,
+                shoppingCart: userDB.shoppingCart || ''
+            }
         })
     })
 })

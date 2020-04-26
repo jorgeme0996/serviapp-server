@@ -93,21 +93,29 @@ router.patch('/update/password', verificarToken, (req, res) => {
     })
 })
 
-router.delete('/delete', [verificarToken, verificaGod], (req, res) => {
-    const user = req.user.user;
+router.delete('/delete/:id', [verificarToken, verificaAdmin], (req, res) => {
+    const user = req.params.id;
 
-    User.findByIdAndDelete(user._id, (err, user) => {
+    User.findByIdAndDelete(user, (err, user) => {
         if(err) {
             return res.status(500).json({
+                ok: false,
                 message: 'Error al actualizar usuario',
                 err
             })
         }
-
-        res.status(200).json({
-            ok: true,
-            user
-        })
+        
+        if(user){
+            res.status(200).json({
+                ok: true,
+                user
+            })
+        } else {
+            return res.status(404).json({
+                ok: false,
+                message: 'Usuario no encontrado'
+            })
+        }
     })
 })
 
