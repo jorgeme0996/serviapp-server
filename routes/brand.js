@@ -2,9 +2,14 @@ const express = require('express');
 const Brand = require('../models/Brand');
 const {verificarToken, verificaAdmin} = require('../middlewares/auth');
 const router  = express.Router();
+const path = require("path");
+const fs = require("fs");
 
 router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
-    Brand.create(req.body, (err, brand) => {
+    const body = req.body;
+    const file = req.file;
+
+    Brand.create(body, (err, brand) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al crear marca',
@@ -12,33 +17,75 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
             })
         }
 
-        return res.status(200).json({
-            brand,
-            ok: true
-        })
+        if(file){
+            const tempPath = file.path;
+            const targetPath = path.join(__dirname, `../public/img/uploads/brand/${brand._id}-${file.originalname}`);
+
+            if(path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpg' ||path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpeg') {
+                fs.rename(tempPath, targetPath, err => {
+                    if(err) {
+                        return res.status(500).json({
+                            message: 'Error al subir imagen',
+                            ok: false
+                        })
+                    } else {
+                        brand.photo = `/img/uploads/brand/${brand._id}-${file.originalname}`;
+                        brand.save();
+                        return res.status(200).json({
+                            brand,
+                            ok: true
+                        })
+                    }
+                })
+            }
+        } else {
+            return res.status(200).json({
+                brand,
+                ok: true
+            })
+        }
     })
 })
 
 router.put('/update/:idBrand', [verificarToken, verificaAdmin], (req, res) => {
-    Brand.findByIdAndUpdate(req.params.idBrand, req.body, {new:true}, (err, brand) => {
-        if(err) {
-            return res.status(500).json({
-                message: 'Error al actualizar marca',
-                ok: false
+    const file = req.file;
+    const brand = req.body;
+
+    if(file){
+        const tempPath = file.path;
+        const targetPath = path.join(__dirname, `../public/img/uploads/brand/${req.params.idBrand}-${file.originalname}`);
+
+        if(path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpg' ||path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpeg') {
+            fs.rename(tempPath, targetPath, err => {
+                if(err) {
+                    return res.status(500).json({
+                        message: 'Error al subir imagen',
+                        ok: false
+                    })
+                } else {
+                    brand.photo = `/img/uploads/brand/${req.params.idBrand}-${file.originalname}`;
+
+                    Brand.findByIdAndUpdate(req.params.idBrand, brand, {new:true}, (err, brand) => {
+                        if(err) {
+                            return res.status(500).json({
+                                message: 'Error al actualizar marca',
+                                ok: false
+                            })
+                        }
+                
+                        return res.status(200).json({
+                            brand,
+                            ok: true
+                        })
+                    })
+                }
             })
         }
-
-        return res.status(200).json({
-            brand,
-            ok: true
-        })
-    })
+    }
 })
 
-router.get('/all', verificarToken, (req, res) => {
+router.get('/all', (req, res) => {
     Brand.find()
-        .populate('products')
-        .populate('models')
         .sort({name:1})
         .exec((err, brands) => {
             if(err) {
@@ -53,6 +100,38 @@ router.get('/all', verificarToken, (req, res) => {
                 ok: true
             })
         })
+})
+
+router.get('/:id', (req, res) => {
+    Brand.findById(req.params.id, (err, brand) => {
+        if(err) {
+            return res.status(500).json({
+                message: 'Error al cargar marcas',
+                ok: false
+            })
+        }
+
+        return res.status(200).json({
+            brand,
+            ok: true
+        })
+    })
+})
+
+router.delete('/:id', [verificarToken, verificaAdmin], (req, res) => {
+    Brand.findByIdAndDelete(req.params.id, (err, brand) => {
+        if(err) {
+            return res.status(500).json({
+                message: 'Error al cargar marcas',
+                ok: false
+            })
+        }
+
+        return res.status(200).json({
+            brand,
+            ok: true
+        })
+    })
 })
 
 module.exports = router;

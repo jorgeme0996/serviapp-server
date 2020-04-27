@@ -2,9 +2,10 @@ require('./config/config');
 
 const express = require('express');
 const connectDB = require('./config/db');
-const fileupload = require('express-fileupload');
+const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
+const bodyParser = require('body-parser');
 const app = express();
 
 //Import Routes
@@ -14,6 +15,7 @@ const AuthRoutes = require('./routes/auth');
 const AddressRoutes = require('./routes/address');
 const ShoppingCartRoutes = require('./routes/shoppingCart');
 const PaymentRoutes = require('./routes/payment');
+const BrandRoutes = require('./routes/brand');
 
 //Connect to database
 connectDB();
@@ -23,9 +25,10 @@ app.use(cors({origin: true, credentials: true}));
 
 //Body Parser
 app.use(express.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-//File uploading
-app.use(fileupload());
+//Multer
+app.use(multer({dest: 'temp/img'}).single('image'));
 
 //Set static folder
 app.use(express.static(path.join(__dirname, '/public')));
@@ -37,6 +40,7 @@ app.use('/api/v1/auth', AuthRoutes);
 app.use('/api/v1/address', AddressRoutes);
 app.use('/api/v1/shoppingCart', ShoppingCartRoutes);
 app.use('/api/v1/payment', PaymentRoutes);
+app.use('/api/v1/brand', BrandRoutes);
 
 app.get('/', (req, res)=> {
     res.status(200).json({

@@ -19,13 +19,18 @@ var ModelSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product"
     },
-    slug: String
+    currency: {
+        type: String,
+        required: [true, 'El tipo de moneda es obligatorio'],
+        enum: [
+            'MXN',
+            'USD'
+        ]
+    },
+    photo: {
+        type: String,
+        default: 'no-image.png'
+    }
 });
-
-//Create Bootcamp Slug From name
-ModelSchema.pre('save', function(next){
-    this.slug = slugify(`${this.name}`, {lower: true});
-    next();
-})
 
 module.exports = mongoose.model("Model", ModelSchema);

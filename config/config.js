@@ -23,7 +23,7 @@ process.env.SEED = process.env.SEED || 'este-es-el-seed-desarrollo';
 process.env.MONGO_URI = process.env.MONGO_URI || 'mongodb://jorgeme0996:J0rg3007@ds149593.mlab.com:49593/servi-db';
 
 //////////////////////////////////////////////
-/// Stripe
+/// host
 /////////////////////////////////////////////
 
-process.env.STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || 'sk_test_nybxVLiwFvveLZmQWzK3e2qb';
+process.env.HOST = process.env.HOST || 'localhost:5000';

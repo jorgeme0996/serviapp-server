@@ -6,13 +6,10 @@ var BrandSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El nombre es obligatorio'],
     },
-    slug: String
+    photo: {
+        type: String,
+        default: '/img/no-image.png'
+    }
 });
-
-//Create Bootcamp Slug From name
-BrandSchema.pre('save', function(next){
-    this.slug = slugify(`${this.name}`, {lower: true});
-    next();
-})
 
 module.exports = mongoose.model("Brand", BrandSchema);

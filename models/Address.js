@@ -38,14 +38,7 @@ var AddressSchema = new mongoose.Schema({
     alias: String,
     referenceOne: String,
     referenceTwo: String,
-    comments: String,
-    slug: String
+    comments: String
 });
-
-//Create Bootcamp Slug From name
-AddressSchema.pre('save', function(next){
-    this.slug = slugify(`${this.street} ${this.numExt} ${this.streetTwo} ${this.city} ${this.state}`, {lower: true});
-    next();
-})
 
 module.exports = mongoose.model("Address", AddressSchema);
