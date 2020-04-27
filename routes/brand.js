@@ -11,6 +11,7 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
 
     Brand.create(body, (err, brand) => {
         if(err) {
+            console.log(err);
             return res.status(500).json({
                 message: 'Error al crear marca',
                 ok: false
@@ -118,7 +119,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
-router.delete('/:id', [verificarToken, verificaAdmin], (req, res) => {
+router.delete('/delete/:id', [verificarToken, verificaAdmin], (req, res) => {
     Brand.findByIdAndDelete(req.params.id, (err, brand) => {
         if(err) {
             return res.status(500).json({
