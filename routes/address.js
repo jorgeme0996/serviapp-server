@@ -102,7 +102,7 @@ router.get('/:id', verificarToken, (req, res) => {
                 message: 'Error al cargar la dirección',
                 ok: false
             })
-        } else if(req.user.user.id.toString() === address.ownerId.toString()){
+        } else if(req.user.user._id.toString() === address.ownerId.toString()){
             return res.status(200).json({
                 ok: true,
                 address
