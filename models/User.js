@@ -55,6 +55,7 @@ var UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    openPayId: String,
     rfc: String
 });
 

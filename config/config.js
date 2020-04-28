@@ -23,7 +23,9 @@ process.env.SEED = process.env.SEED || 'este-es-el-seed-desarrollo';
 process.env.MONGO_URI = process.env.MONGO_URI || 'mongodb://jorgeme0996:J0rg3007@ds149593.mlab.com:49593/servi-db';
 
 //////////////////////////////////////////////
-/// host
+/// OPEN PAY
 /////////////////////////////////////////////
 
-process.env.HOST = process.env.HOST || 'localhost:5000';
+process.env.OPENPAY_ID = process.env.OPENPAY_ID || 'moxqwup28xgmjkf6gg57';
+
+process.env.OPENPAY_SECRET_KEY = process.env.OPENPAY_SECRET_KEY || 'sk_9ec4723378c64877b26effe298be93ce';

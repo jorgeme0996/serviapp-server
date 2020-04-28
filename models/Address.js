@@ -35,6 +35,10 @@ var AddressSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
+    isBilling: {
+        type: Boolean,
+        default: false
+    },
     alias: String,
     referenceOne: String,
     referenceTwo: String,

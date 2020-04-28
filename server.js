@@ -16,6 +16,7 @@ const AddressRoutes = require('./routes/address');
 const ShoppingCartRoutes = require('./routes/shoppingCart');
 const PaymentRoutes = require('./routes/payment');
 const BrandRoutes = require('./routes/brand');
+const CardRoutes = require('./routes/card');
 
 //Connect to database
 connectDB();
@@ -41,6 +42,7 @@ app.use('/api/v1/address', AddressRoutes);
 app.use('/api/v1/shoppingCart', ShoppingCartRoutes);
 app.use('/api/v1/payment', PaymentRoutes);
 app.use('/api/v1/brand', BrandRoutes);
+app.use('/api/v1/card', CardRoutes);
 
 app.get('/', (req, res)=> {
     res.status(200).json({
