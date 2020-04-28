@@ -95,6 +95,27 @@ router.get('/user', verificarToken, (req, res)=> {
     })
 })
 
+router.get('/:id', verificarToken, (req, res) => {
+    Address.findById(req.params.id, (err, address) => {
+        if(err) {
+            return res.status(500).json({
+                message: 'Error al cargar la dirección',
+                ok: false
+            })
+        } else if(req.user.user.id.toString() === address.ownerId.toString()){
+            return res.status(200).json({
+                ok: true,
+                address
+            })
+        } else {
+            return res.status(401).json({
+                message: 'Usuario no valido',
+                ok: false
+            })
+        }
+    })
+})
+
 router.delete('/delete/:idAddress', verificarToken, (req, res) => {
     const idAddress = req.params.idAddress;
     const user = req.user.user;
