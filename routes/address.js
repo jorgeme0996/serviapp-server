@@ -133,25 +133,31 @@ router.delete('/delete/:idAddress', verificarToken, (req, res) => {
                 err
             })
         }
-
-        if(address.ownerId.toString() === user._id.toString()){
-            Address.findByIdAndDelete(idAddress, (err, address) => {
-                if(err) {
-                    return res.status(500).json({
-                        message: 'Error al borrar dirección',
-                        ok: false,
-                        err
+        if(address) {
+            if(address.ownerId.toString() === user._id.toString()){
+                Address.findByIdAndDelete(idAddress, (err, address) => {
+                    if(err) {
+                        return res.status(500).json({
+                            message: 'Error al borrar dirección',
+                            ok: false,
+                            err
+                        })
+                    }
+    
+                    return res.status(200).json({
+                        address,
+                        ok: true
                     })
-                }
-
-                return res.status(200).json({
-                    address,
-                    ok: true
                 })
-            })
+            } else {
+                return res.status(401).json({
+                    message: 'Usuario Incorrecto',
+                    ok: false
+                })
+            }
         } else {
-            return res.status(401).json({
-                message: 'Usuario Incorrecto',
+            return res.status(400).json({
+                message: 'Dirección no encontrada',
                 ok: false
             })
         }
