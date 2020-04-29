@@ -60,6 +60,7 @@ router.put('/update', verificarToken, (req, res) => {
     User.findByIdAndUpdate(user._id, newUser, {new:true}, (err, user) => {
         if(err) {
             return res.status(500).json({
+                ok: false,
                 message: 'Error al actualizar usuario',
                 err
             })
@@ -81,6 +82,7 @@ router.patch('/update/password', verificarToken, (req, res) => {
     User.updateOne({_id: user._id}, newPass, {new:true}, (err, user) => {
         if(err) {
             return res.status(500).json({
+                ok: false,
                 message: 'Error al actualizar contraseña',
                 err
             })

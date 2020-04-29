@@ -10,7 +10,8 @@ router.get('/create', (req, res) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al crear carrito de compras',
-                ok: false
+                ok: false,
+                err
             })
         }
 
@@ -26,7 +27,8 @@ router.get('/:id', (req, res) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al cargar carrito de compras',
-                ok: false
+                ok: false,
+                err
             })
         }
 
@@ -44,7 +46,8 @@ router.patch('/user/:idShoppingCart', verificarToken, (req, res) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al cargar usuario',
-                ok: false
+                ok: false,
+                err
             })
         }
 
@@ -53,7 +56,8 @@ router.patch('/user/:idShoppingCart', verificarToken, (req, res) => {
                 if(err) {
                     return res.status(500).json({
                         message: 'Error al cargar carrito de compras',
-                        ok: false
+                        ok: false,
+                        err
                     })
                 }
 
@@ -83,7 +87,8 @@ router.delete('/delete/:id', [verificarToken, verificaAdmin], (req, res) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al borrar carrito de compras',
-                ok: false
+                ok: false,
+                err
             })
         }
 

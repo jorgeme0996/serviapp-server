@@ -5,7 +5,6 @@ const {verificarToken} = require('../middlewares/auth');
 const router  = express.Router();
 
 router.post('/create', verificarToken, (req, res)=> {
-    console.log(req.body);
     const userId = req.user.user._id;
     User.findById(userId, (err, user)=> {
         if(err){
@@ -19,10 +18,10 @@ router.post('/create', verificarToken, (req, res)=> {
         if(user) {
             Address.create(req.body, (err, address)=> {
                 if(err){
-                    console.log(err);
                     return res.status(500).json({
                         message: 'Error al crear una dirección',
-                        ok: false
+                        ok: false,
+                        err
                     })
                 }
     
@@ -51,7 +50,8 @@ router.put('/update/:idAddress', verificarToken, (req, res)=> {
         if(err) {
             return res.status(500).json({
                 message: 'Error al actualizar Dirección',
-                ok: false
+                ok: false,
+                err
             })
         }
         if(req.user.user._id.toString() === address.ownerId.toString()) {
@@ -59,7 +59,8 @@ router.put('/update/:idAddress', verificarToken, (req, res)=> {
                 if(err) {
                     return res.status(500).json({
                         message: 'Error al actualizar Dirección',
-                        ok: false
+                        ok: false,
+                        err
                     })
                 }
         
@@ -84,7 +85,8 @@ router.get('/user', verificarToken, (req, res)=> {
         if(err){
             return res.status(500).json({
                 message: 'Error al cargar al direcciones',
-                ok: false
+                ok: false,
+                err
             })
         }
 
@@ -102,7 +104,8 @@ router.get('/:id', verificarToken, (req, res) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al cargar la dirección',
-                ok: false
+                ok: false,
+                err
             })
         } else if(req.user.user._id.toString() === address.ownerId.toString()){
             return res.status(200).json({
@@ -126,7 +129,8 @@ router.delete('/delete/:idAddress', verificarToken, (req, res) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al borrar dirección',
-                ok: false
+                ok: false,
+                err
             })
         }
 
@@ -135,7 +139,8 @@ router.delete('/delete/:idAddress', verificarToken, (req, res) => {
                 if(err) {
                     return res.status(500).json({
                         message: 'Error al borrar dirección',
-                        ok: false
+                        ok: false,
+                        err
                     })
                 }
 

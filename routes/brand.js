@@ -14,7 +14,8 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
             console.log(err);
             return res.status(500).json({
                 message: 'Error al crear marca',
-                ok: false
+                ok: false,
+                err
             })
         }
 
@@ -27,7 +28,8 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
                     if(err) {
                         return res.status(500).json({
                             message: 'Error al subir imagen',
-                            ok: false
+                            ok: false,
+                            err
                         })
                     } else {
                         brand.photo = `/img/uploads/brand/${brand._id}-${file.originalname}`;
@@ -61,7 +63,8 @@ router.put('/update/:idBrand', [verificarToken, verificaAdmin], (req, res) => {
                 if(err) {
                     return res.status(500).json({
                         message: 'Error al subir imagen',
-                        ok: false
+                        ok: false,
+                        err
                     })
                 } else {
                     brand.photo = `/img/uploads/brand/${req.params.idBrand}-${file.originalname}`;
@@ -70,7 +73,8 @@ router.put('/update/:idBrand', [verificarToken, verificaAdmin], (req, res) => {
                         if(err) {
                             return res.status(500).json({
                                 message: 'Error al actualizar marca',
-                                ok: false
+                                ok: false,
+                                err
                             })
                         }
                 
@@ -92,7 +96,8 @@ router.get('/all', (req, res) => {
             if(err) {
                 return res.status(500).json({
                     message: 'Error al cargar marcas',
-                    ok: false
+                    ok: false,
+                    err
                 })
             }
 
@@ -108,7 +113,8 @@ router.get('/:id', (req, res) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al cargar marcas',
-                ok: false
+                ok: false,
+                err
             })
         }
 
@@ -124,7 +130,8 @@ router.delete('/delete/:id', [verificarToken, verificaAdmin], (req, res) => {
         if(err) {
             return res.status(500).json({
                 message: 'Error al cargar marcas',
-                ok: false
+                ok: false,
+                err
             })
         }
 
