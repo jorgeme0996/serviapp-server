@@ -5,12 +5,14 @@ const {verificarToken} = require('../middlewares/auth');
 const router  = express.Router();
 
 router.post('/create', verificarToken, (req, res)=> {
+    console.log(req.body);
     const userId = req.user.user._id;
     User.findById(userId, (err, user)=> {
         if(err){
             return res.status(500).json({
                 message: 'Error al cargar usuario',
-                ok: false
+                ok: false,
+                err
             })
         }
 
