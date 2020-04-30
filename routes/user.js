@@ -15,6 +15,7 @@ router.post('/create', (req, res) => {
         name: body.name,
         lastName: body.lastName,
         middleName: body.middleName,
+        phoneTwo: body.phoneTwo,
         phone: body.phone
     })
     
@@ -46,7 +47,7 @@ router.post('/create', (req, res) => {
 router.put('/update', verificarToken, (req, res) => {
     const user = req.user.user;
     let body = req.body;
-
+    
     let newUser = {
         email: body.email || user.email,
         role: body.role || user.role,
@@ -54,7 +55,8 @@ router.put('/update', verificarToken, (req, res) => {
         name: body.name || user.name,
         lastName: body.lastName || user.lastName,
         middleName: body.middleName || user.middleName,
-        phone: body.phone || user.phone
+        phone: body.phone || user.phone,
+        phoneTwo: body.phoneTwo || user.phoneTwo
     }
 
     User.findByIdAndUpdate(user._id, newUser, {new:true}, (err, user) => {

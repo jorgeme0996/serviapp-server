@@ -107,14 +107,22 @@ router.get('/:id', verificarToken, (req, res) => {
                 ok: false,
                 err
             })
-        } else if(req.user.user._id.toString() === address.ownerId.toString()){
-            return res.status(200).json({
-                ok: true,
-                address
-            })
+        }
+        if(address) {
+            if(req.user.user._id.toString() === address.ownerId.toString()){
+                return res.status(200).json({
+                    ok: true,
+                    address
+                })
+            } else {
+                return res.status(401).json({
+                    message: 'Usuario no valido',
+                    ok: false
+                })
+            }
         } else {
-            return res.status(401).json({
-                message: 'Usuario no valido',
+            return res.status(400).json({
+                message: 'Dirección no encontrada',
                 ok: false
             })
         }
