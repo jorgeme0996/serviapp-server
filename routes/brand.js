@@ -9,6 +9,9 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
     const body = req.body;
     const file = req.file;
 
+    console.log(body);
+    console.log(file);
+
     Brand.create(body, (err, brand) => {
         if(err) {
             console.log(err);
