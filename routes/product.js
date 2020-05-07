@@ -1,5 +1,5 @@
 const express = require('express');
-const Brand = require('../models/Brand');
+const Product = require('../models/Product');
 const {verificarToken, verificaAdmin} = require('../middlewares/auth');
 const router  = express.Router();
 const path = require("path");
@@ -9,11 +9,11 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
     const body = req.body;
     const file = req.file;
 
-    Brand.create(body, (err, brand) => {
+    Product.create(body, (err, product) => {
         if(err) {
             console.log(err);
             return res.status(500).json({
-                message: 'Error al crear marca',
+                message: 'Error al crear producto',
                 ok: false,
                 err
             })
@@ -22,7 +22,7 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
         if(file){
             if(file.size < 250000) {
                 const tempPath = file.path;
-                const targetPath = path.join(__dirname, `../public/img/uploads/brand/${brand._id}-${file.originalname}`);
+                const targetPath = path.join(__dirname, `../public/img/uploads/product/${product._id}-${file.originalname}`);
     
                 if(path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpg' ||path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpeg') {
                     fs.rename(tempPath, targetPath, err => {
@@ -32,10 +32,10 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
                                 ok: false,
                             })
                         } else {
-                            brand.photo = `/img/uploads/brand/${brand._id}-${file.originalname}`;
-                            brand.save();
+                            product.photo = `/img/uploads/product/${product._id}-${file.originalname}`;
+                            product.save();
                             return res.status(200).json({
-                                brand,
+                                product,
                                 ok: true
                             })
                         }
@@ -55,20 +55,20 @@ router.post('/create', [verificarToken, verificaAdmin], (req, res) => {
             }
         } else {
             return res.status(200).json({
-                brand,
+                product,
                 ok: true
             })
         }
     })
 })
 
-router.put('/update/:idBrand', [verificarToken, verificaAdmin], (req, res) => {
+router.put('/update/:idProduct', [verificarToken, verificaAdmin], (req, res) => {
     const file = req.file;
-    const brand = req.body;
+    const product = req.body;
 
     if(file){
         const tempPath = file.path;
-        const targetPath = path.join(__dirname, `../public/img/uploads/brand/${req.params.idBrand}-${file.originalname}`);
+        const targetPath = path.join(__dirname, `../public/img/uploads/product/${req.params.idProduct}-${file.originalname}`);
 
         if(path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpg' ||path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpeg') {
             fs.rename(tempPath, targetPath, err => {
@@ -79,19 +79,19 @@ router.put('/update/:idBrand', [verificarToken, verificaAdmin], (req, res) => {
                         err
                     })
                 } else {
-                    brand.photo = `/img/uploads/brand/${req.params.idBrand}-${file.originalname}`;
+                    product.photo = `/img/uploads/product/${req.params.idProduct}-${file.originalname}`;
 
-                    Brand.findByIdAndUpdate(req.params.idBrand, brand, {new:true}, (err, brand) => {
+                    Product.findByIdAndUpdate(req.params.idProduct, product, {new:true}, (err, prod) => {
                         if(err) {
                             return res.status(500).json({
-                                message: 'Error al actualizar marca',
+                                message: 'Error al actualizar producto',
                                 ok: false,
                                 err
                             })
                         }
                 
                         return res.status(200).json({
-                            brand,
+                            prod,
                             ok: true
                         })
                     })
@@ -99,32 +99,32 @@ router.put('/update/:idBrand', [verificarToken, verificaAdmin], (req, res) => {
             })
         }
     } else {
-        Brand.findById(req.params.idBrand, (err, resBrand) => {
+        Product.findById(req.params.idProduct, (err, resProd) => {
             if(err) {
                 return res.status(500).json({
-                    message: 'Error al actualizar marca',
+                    message: 'Error al actualizar producto',
                     ok: false,
                     err
                 })
             }
 
-            if(resBrand){
-                const updateBrand = {
-                    name: brand.name,
-                    photo: resBrand.photo
+            if(resProd){
+                const updateProd = {
+                    name: product.name,
+                    photo: resProd.photo
                 }
 
-                Brand.findByIdAndUpdate(req.params.idBrand, updateBrand, {new:true}, (err, newBrand) => {
+                Product.findByIdAndUpdate(req.params.idProduct, updateProd, {new:true}, (err, newProd) => {
                     if(err) {
                         return res.status(500).json({
-                            message: 'Error al actualizar marca',
+                            message: 'Error al actualizar producto',
                             ok: false,
                             err
                         })
                     }
 
                     return res.status(200).json({
-                        brand: newBrand,
+                        product: newProd,
                         ok: true
                     })
 
@@ -136,53 +136,36 @@ router.put('/update/:idBrand', [verificarToken, verificaAdmin], (req, res) => {
 })
 
 router.get('/all', (req, res) => {
-    Brand.find()
+    Product.find()
         .sort({name:1})
-        .exec((err, brands) => {
+        .exec((err, products) => {
             if(err) {
                 return res.status(500).json({
-                    message: 'Error al cargar marcas',
+                    message: 'Error al cargar productos',
                     ok: false,
                     err
                 })
             }
 
             return res.status(200).json({
-                brands,
+                products,
                 ok: true
             })
         })
 })
 
-router.get('/:id', (req, res) => {
-    Brand.findById(req.params.id, (err, brand) => {
-        if(err) {
-            return res.status(500).json({
-                message: 'Error al cargar marcas',
-                ok: false,
-                err
-            })
-        }
-
-        return res.status(200).json({
-            brand,
-            ok: true
-        })
-    })
-})
-
 router.delete('/delete/:id', [verificarToken, verificaAdmin], (req, res) => {
-    Brand.findByIdAndDelete(req.params.id, (err, brand) => {
+    Product.findByIdAndDelete(req.params.id, (err, product) => {
         if(err) {
             return res.status(500).json({
-                message: 'Error al cargar marcas',
+                message: 'Error al cargar producto',
                 ok: false,
                 err
             })
         }
 
         return res.status(200).json({
-            brand,
+            product,
             ok: true
         })
     })

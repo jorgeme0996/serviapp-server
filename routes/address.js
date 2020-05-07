@@ -45,6 +45,7 @@ router.post('/create', verificarToken, (req, res)=> {
 })
 
 router.put('/update/:idAddress', verificarToken, (req, res)=> { 
+    console.log(req.body);
     const id = req.params.idAddress;
     Address.findById(id, (err, address)=> {
         if(err) {

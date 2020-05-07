@@ -7,7 +7,7 @@ var ModelSchema = new mongoose.Schema({
         required: [true, 'El nombre es obligatorio'],
     },
     price: {
-        type: Number,
+        type: String,
         required: [true, 'El precio es obligatorio'],
     },
     description: String,
@@ -27,10 +27,18 @@ var ModelSchema = new mongoose.Schema({
             'USD'
         ]
     },
+    stock: {
+        type: String,
+        default: '0'
+    },
     photo: {
         type: String,
-        default: 'no-image.png'
-    }
+        default: '/img/no-image.png'
+    },
+    model: String,
+    year: String,
+    capacity: String,
+    series: String,
 });
 
 module.exports = mongoose.model("Model", ModelSchema);
